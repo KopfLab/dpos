@@ -5,7 +5,8 @@ warnings_are_errors: false
 
 r_github_packages:
   - jimhester/covr
-
+  - sebkopf/isotopia
+  - sebkopf/isoread
 
 after_success:
   - Rscript -e 'covr::codecov()'
