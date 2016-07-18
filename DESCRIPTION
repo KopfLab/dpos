@@ -1,0 +1,30 @@
+Package: dpos
+Type: Package
+Title: MAT253 Plus testing
+Version: 0.1
+Date: 2016-07-18
+Author: Sebastian Kopf
+Maintainer: Sebastian Kopf <sebastian.kopf@colorado.edu>
+Description: This packages is for MAT253 data processing.
+License: GPL-3
+Roxygen: list(wrap = FALSE)
+URL: https://github.com/kopflab/dpos
+BugReports: https://github.com/kopflab/dpos/issues
+Imports:
+    dplyr,
+    plotly (>= 3.3.1),
+    ggplot2 (>= 2.1.0)
+Imports:
+    isoread
+Suggests:
+    testthat,
+    rmarkdown,
+    knitr,
+    openxlsx,
+    shiny,
+    shinyBS,
+    DT
+VignetteBuilder: knitr
+Collate:
+    'package.R'
+RoxygenNote: 5.0.1
