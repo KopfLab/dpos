@@ -78,5 +78,5 @@ get_mass_data <- function(files, quiet = FALSE, format = c("wide", "long")) {
   if (format == "long")
     out <- out %>% gather(mass, intensity, starts_with("mass"))
 
-  return(out)
+  return(as_data_frame(out))
 }

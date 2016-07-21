@@ -23,11 +23,12 @@ test_that("Data loading", {
   # expected outcome from get_mass_data
   expect_message(scan %>% get_mass_data(), "aggregated mass data.*7 masses.*1050 measurements")
   expect_message(dt <- scan %>% get_mass_data(quiet = T), NA)
-  expect_is(dt, "tbl")
+  expect_is(dt, "data.frame")
   expect_equal(dt %>% nrow(), 1050)
   expect_equal(dt %>%  names(), c("step", paste0("mass", c(44, 45, 46, 47, 54, 48, 49)), "path", "filename"))
-  expect_equal(dt[1,c("step", "mass44", "mass48", "filename")] %>% mutate(mass44 = round(mass44, 5), mass48 = round(mass48, 3)),
-               data_frame(step = 61601, mass44 = 0.08439, mass48 = 18.241, filename = "peakshapes.scn"))
+  expect_equal(dt[1,c("step", "mass44", "mass48", "filename")] %>% mutate(mass44 = round(mass44, 5), mass48 = round(mass48, 3)) %>%
+                 as.list(),
+               list(step = 61601, mass44 = 0.08439, mass48 = 18.241, filename = "peakshapes.scn"))
   expect_equal(scan %>% get_mass_data(format = "long") %>% names(), c("step", "path", "filename", "mass", "intensity"))
   expect_equal(scan %>% get_mass_data(format = "long") %>% nrow(), 7350)
 })
