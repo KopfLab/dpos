@@ -11,7 +11,10 @@ Roxygen: list(wrap = FALSE)
 URL: https://github.com/kopflab/dpos
 BugReports: https://github.com/kopflab/dpos/issues
 Imports:
-    isoread
+    isoread,
+    tidyr,
+    dplyr,
+    ggplot2
 Suggests:
     testthat,
     rmarkdown,
