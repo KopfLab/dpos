@@ -5,13 +5,14 @@ test_that("Data loading", {
   # load_isodat_scan errors
   expect_error(load_isodat_scan("DNE"), "missing file*")
   expect_error(load_isodat_scan(c(system.file("doc", package="dpos"), "DNE2")), "missing file.* DNE2")
-  expect_error(load_isodat_scan(system.file(file.path("R", "package.R"), package = "dpos")), "failed to load.*package.R")
-  expect_error(load_isodat_scan(system.file(file.path("R", c("package.R", "loading.R")), package = "dpos")),
-               "failed to load.*package.R.*loading.R")
+  # FIXME: have to use other files, these are not available
+  #expect_error(load_isodat_scan(system.file(file.path("R", "package.R"), package = "dpos")), "failed to load.*package.R")
+  #expect_error(load_isodat_scan(system.file(file.path("R", c("package.R", "loading.R")), package = "dpos")),
+  #             "failed to load.*package.R.*loading.R")
 
   # expect outcome from load_isodat_scan
-  expect_true(file.exists(system.file(file.path("inst", "extdata", "peakshapes.scn"), package = "dpos")))
-  expect_message(scan <- load_isodat_scan(system.file(file.path("inst", "extdata", "peakshapes.scn"), package = "dpos"), quiet = T), NA)
+  expect_true(file.exists(system.file(file.path("extdata", "peakshapes.scn"), package = "dpos")))
+  expect_message(scan <- load_isodat_scan(system.file(file.path("extdata", "peakshapes.scn"), package = "dpos"), quiet = T), NA)
   expect_is(scan, "list")
   expect_is(scan[[1]], "IsodatScanFile")
 
