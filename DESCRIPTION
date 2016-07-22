@@ -28,6 +28,6 @@ Suggests:
 VignetteBuilder: knitr
 Collate:
     'loading.R'
-    'package.R'
     'plotting.R'
+    'package.R'
 RoxygenNote: 5.0.1

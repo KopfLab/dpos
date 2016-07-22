@@ -11,7 +11,7 @@
 #' @importFrom stringr str_match_all
 #'
 #' @include loading.R
-#'
+#' @include plotting.R
 NULL
 
 #' @export
