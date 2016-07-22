@@ -12,6 +12,7 @@
 #'
 #' @include loading.R
 #' @include plotting.R
+#' @include gui.R
 NULL
 
 #' @export

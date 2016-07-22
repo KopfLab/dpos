@@ -24,9 +24,11 @@ Suggests:
     openxlsx,
     shiny,
     shinyBS,
+    shinydashboard,
     DT
 VignetteBuilder: knitr
 Collate:
+    'gui.R'
     'loading.R'
     'plotting.R'
     'package.R'
