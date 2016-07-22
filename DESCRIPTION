@@ -11,6 +11,8 @@ Roxygen: list(wrap = FALSE)
 URL: https://github.com/kopflab/dpos
 BugReports: https://github.com/kopflab/dpos/issues
 Imports:
+    methods,
+    stringr,
     isoread,
     tidyr,
     dplyr,
@@ -27,4 +29,5 @@ VignetteBuilder: knitr
 Collate:
     'loading.R'
     'package.R'
+    'plotting.R'
 RoxygenNote: 5.0.1
