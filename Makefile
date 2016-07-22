@@ -4,8 +4,8 @@ PKGSRC  := $(shell basename `pwd`)
 
 all: docu install check
 
-app_dev:
-	Rscript -e "$(PKGNAME):::run_gui_dev(base_dir = file.path('inst', 'extdata'), app_dir = file.path('inst', 'gui'), launch.browser = T)"
+gui_dev:
+	bundle exec guard
 
 vignettes:
 	Rscript -e "require(devtools); devtools::build_vignettes()"
