@@ -1,43 +1,27 @@
-
-#' Load range scan
+#' Load tuning scans
+#'
+#' Supports loading both isodat scan (.scn) and range scans (.bff), calling
+#' load_isodat_scan and load_range_scan internally.
 #'
 #' @param path file path, can be a vector for loading multiple files
-#' @param quiet whether to suppress the output of informational messages
-#' @family tuning scans
-#' @export
-load_range_scan <- function (path, quiet = FALSE) {
+#' (including different file types and folders that will be read with all compatible
+#' file types)
+#' @return list of scan objects
+#' @note folder loading not implemented yet
+load_scans <- function(paths, quiet = FALSE) {
 
-  # checks
-  if (!all(na <- file.exists(path)))
-    stop("Cannot load range scans, missing file(s): ", path[!na] %>% paste(collapse = ", "), call. = FALSE)
-
-  # load isodat scan files
-  files <- path %>%
+  # load scans
+  files <- paths %>%
     lapply(function(p) {
-      if (!quiet) sprintf("Reading file %s", p) %>% message()
       tryCatch({
-        # read file
-        scan_file <- readLines(p) %>%
-          # find each value
-          str_match_all("([^=,]+)=(([0-9.]+)|[^,]+)(,|$)") %>%
-          # pull out values broken out by numbers and characters
-          lapply(
-            function(entry) {
-              numbers <- entry[,4] != ""
-              c(as.list(entry[,3][!numbers]), as.list(as.numeric(entry[,3][numbers]))) %>%
-                setNames(c(entry[,2][!numbers], entry[,2][numbers]))
-            }
-          ) %>%
-          # make a data frame out it all
-          bind_rows() %>%
-          # wrap in a structure for easy identification and plotting
-          structure(
-            filepath = dirname(p),
-            filename = basename(p),
-            class = "RangeScanFile"
-          )
-        names(scan_file) <- sub(".mV", "", names(scan_file), fixed = T)
-        scan_file
+        ext <- stringr::str_match(basename(p), "\\.(\\w+$)")[1,2]
+        if (!is.na(ext) && ext == "scn") {
+          return(load_isodat_scan(p, quiet = quiet))
+        } else if (!is.na(ext) && ext == "bff") {
+          return(load_range_scan(p, quiet = quiet))
+        } else {
+          stop("unknown extension: ", ext, call. = FALSE)
+        }
       }, error = function(e){
         if (!quiet) message("Problem: ", e$message)
         return(p)
@@ -47,49 +31,67 @@ load_range_scan <- function (path, quiet = FALSE) {
   # if errors, stop
   if (any(failed <- files %>% sapply(class) == "character")) {
     stop(
-      paste0("failed to load the following range scan file(s):\n",
+      paste0("failed to load the following scan file(s):\n",
              files[failed] %>% paste(collapse = "\n")),
       call. = FALSE
     )
   }
 
   return(files)
+}
 
+
+#' Load range scan
+#'
+#' @param path file path
+#' @param quiet whether to suppress the output of informational messages
+#' @family tuning scans
+#' @export
+load_range_scan <- function (path, quiet = FALSE) {
+  # checks
+  if(!file.exists(path))
+    stop("Cannot load range scan, missing file: ", path, call. = FALSE)
+
+  # load scan file
+  if (!quiet) sprintf("Reading file %s", path) %>% message()
+
+  scan_file <- readLines(path) %>%
+    # find each value
+    str_match_all("([^=,]+)=(([0-9.]+)|[^,]+)(,|$)") %>%
+    # pull out values broken out by numbers and characters
+    lapply(
+      function(entry) {
+        numbers <- entry[,4] != ""
+        c(as.list(entry[,3][!numbers]), as.list(as.numeric(entry[,3][numbers]))) %>%
+          setNames(c(entry[,2][!numbers], entry[,2][numbers]))
+      }
+    ) %>%
+    # make a data frame out it all
+    bind_rows() %>%
+    # wrap in a structure for easy identification and plotting
+    structure(
+      filepath = dirname(path),
+      filename = basename(path),
+      class = "RangeScanFile"
+    )
+  names(scan_file) <- sub(".mV", "", names(scan_file), fixed = T)
+  return(scan_file)
 }
 
 #' Load isodat scan
 #'
-#' @param path file path, can be a vector for loading multiple scan files
+#' @param path file path
 #' @param quiet whether to suppress the output of informational messages
 #' @family tuning scans
 #' @export
 load_isodat_scan <- function (path, quiet = FALSE) {
 
   # checks
-  if (!all(na <- file.exists(path)))
-    stop("Cannot load isodat scans, missing file(s): ", path[!na] %>% paste(collapse = ", "), call. = FALSE)
+  if(!file.exists(path))
+    stop("Cannot load isodat scan, missing file: ", path, call. = FALSE)
 
   # load isodat scan files
-  files <- path %>%
-    lapply(function(p) {
-      tryCatch({
-        isoread(p, type = "SCAN", quiet = quiet)
-      }, error = function(e){
-        if (!quiet) message("Problem: ", e$message)
-        return(p)
-      })
-    })
-
-  # if errors, stop
-  if (any(failed <- files %>% sapply(class) == "character")) {
-    stop(
-      paste0("failed to load the following isodat scan file(s):\n",
-             files[failed] %>% paste(collapse = "\n")),
-      call. = FALSE
-    )
-  }
-
-  return(files)
+  return(isoread(path, type = "SCAN", quiet = quiet))
 }
 
 #' Combine mass data from loaded scan files (of all types)
@@ -104,7 +106,7 @@ load_isodat_scan <- function (path, quiet = FALSE) {
 get_mass_data <- function(files, quiet = FALSE, format = c("wide", "long")) {
 
   # checks
-  if (!is.list(files)) files <- list(files)
+  if (class(files) %in% c("IsodatScanFile", "RangeScanFile")) files <- list(files)
   if (missing(format)) format <- "wide"
   if (!format %in% c("wide", "long")) stop("unknown format: ", format, call. = F)
 

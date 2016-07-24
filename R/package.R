@@ -28,7 +28,7 @@ as_data_frame.RangeScanFile <- function(x, ...) {
 
 #' @export
 print.RangeScanFile <- function(x, ...) {
-  cat("IsodatRangeFile")
+  cat("RangeScanFile")
   cat("\nFile:", attr(x, "filename"))
   cat("\nLocation:", attr(x, "filepath"))
   cat("\nData:\n")
