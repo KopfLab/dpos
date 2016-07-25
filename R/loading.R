@@ -8,6 +8,7 @@
 #' file types)
 #' @return list of scan objects
 #' @note folder loading not implemented yet
+#' @export
 load_scans <- function(paths, quiet = FALSE) {
 
   # load scans

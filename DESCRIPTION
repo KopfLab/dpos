@@ -25,6 +25,7 @@ Suggests:
     shiny,
     shinyBS,
     shinydashboard,
+    shinyAce,
     DT
 VignetteBuilder: knitr
 Collate:
