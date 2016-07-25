@@ -1,4 +1,11 @@
 library(shinydashboard)
+library(shinyjs)
+library(shinyAce)
 library(magrittr)
-source("file_selector.R")
+library(dpos)
+library(ggplot2)
+library(plotly)
+source("module_file_browser.R")
+source("module_ggplot_download.R")
 
+`%then%` <- shiny:::`%OR%`
