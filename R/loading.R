@@ -92,7 +92,7 @@ load_isodat_scan <- function (path, quiet = FALSE) {
     stop("Cannot load isodat scan, missing file: ", path, call. = FALSE)
 
   # load isodat scan files
-  return(isoread(path, type = "SCAN", quiet = quiet))
+  return(suppressWarnings(isoread(path, type = "SCAN", quiet = quiet)))
 }
 
 #' Load isodat dual inlet
