@@ -95,6 +95,22 @@ load_isodat_scan <- function (path, quiet = FALSE) {
   return(isoread(path, type = "SCAN", quiet = quiet))
 }
 
+#' Load isodat dual inlet
+#'
+#' @param path file path
+#' @param quiet whether to suppress the output of informational messages
+#' @family data
+#' @export
+load_isodat_data <- function (path, quiet = FALSE) {
+
+  # checks
+  if(!file.exists(path))
+    stop("Cannot load isodat data file, missing file: ", path, call. = FALSE)
+
+  # load isodat scan files
+  return(isoread(path, type = "DI", quiet = quiet))
+}
+
 #' Combine mass data from loaded scan files (of all types)
 #'
 #' This function combines all the mass data from scan files

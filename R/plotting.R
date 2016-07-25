@@ -20,6 +20,13 @@ make_ggplot.IsodatScanFile <- function(x, ...){
   x$make_ggplot()
 }
 
+#' @method make_ggplot IsodatDualInletFile
+#' @rdname make_ggplot
+#' @export
+make_ggplot.IsodatDualInletFile <- function(x, ...){
+  x$make_ggplot()
+}
+
 
 #' @method make_ggplot RangeScanFile
 #' @rdname make_ggplot
@@ -68,6 +75,15 @@ make_iplot.IsodatScanFile <- function(x, ...){
   plotly::ggplotly(p)
 }
 
+#' @method make_iplot IsodatDualInletFile
+#' @rdname make_iplot
+#' @export
+make_iplot.IsodatDualInletFile <- function(x, ...){
+  p <- make_ggplot(x) +
+    theme(legend.position = "none")
+  class(p$mapping) <- c(class(p$mapping), "uneval")
+  plotly::ggplotly(p)
+}
 
 #' @method make_iplot RangeScanFile
 #' @rdname make_iplot
