@@ -1,0 +1,14 @@
+---
+title: "testing"
+output: html_document
+---
+
+```{r}
+library(dpos)
+```
+
+```{r}
+raw_file <- load_scans("inst/extdata/extraction.bff")
+
+```
+

@@ -58,7 +58,7 @@ load_range_scan <- function (path, quiet = FALSE) {
 
   scan_file <- readLines(path) %>%
     # find each value
-    str_match_all("([^=,]+)=(([0-9.]+)|[^,]+)(,|$)") %>%
+    str_match_all("([^=,]+)=(([-0-9.]+)|[^,]+)(,|$)") %>%
     # pull out values broken out by numbers and characters
     lapply(
       function(entry) {
@@ -91,7 +91,7 @@ load_isodat_scan <- function (path, quiet = FALSE) {
   if(!file.exists(path))
     stop("Cannot load isodat scan, missing file: ", path, call. = FALSE)
 
-  # load isodat scan files
+  # load isodat scan files (FIXME - how to deal with warnings in the tryCatch?)
   return(suppressWarnings(isoread(path, type = "SCAN", quiet = quiet)))
 }
 

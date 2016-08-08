@@ -88,6 +88,14 @@ ui <- dashboardPage(
           upload_label = 'Upload tuning files (individual or .zip archives)')) %>%
         fluidRow(),
 
+      # DATA: File preview code ----
+      box(
+        aceEditor("data_plot_code", mode = "r",
+                  theme="ambiance", readOnly = TRUE,
+                  height = "200px"),
+        title = "Code preview",
+        status = "success", solidHeader = TRUE, width = 12),
+
       # DATA: File preview box ----
       box(
         plotDownloadLink(id = "data_file_download"),
@@ -100,15 +108,9 @@ ui <- dashboardPage(
         ),
 
         title = "Data file quick view",
-        status = "info", solidHeader = TRUE, width = 12),
+        status = "info", solidHeader = TRUE, width = 12)
 
-      # DATA: File preview code ----
-      box(
-        aceEditor("data_plot_code", mode = "r",
-                  theme="ambiance", readOnly = TRUE,
-                  height = "200px"),
-        title = "Code preview",
-        status = "success", solidHeader = TRUE, width = 12)
+
     ) # / tabItem
 
   ) %>% dashboardBody()

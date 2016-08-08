@@ -58,15 +58,17 @@ server <- shinyServer(function(input, output, session) {
   # TUNING: File plot code preview ----
   observe({
     view_file <- tuning_files$double_click()
-    if (is.null(view_file) || view_file == "") code <- "# No file selected"
+    if (is.null(view_file) || view_file == "") code <- "```{r}\n# No file selected\n```"
     else {
       code <-
         paste0(
+          "```{r}\n",
           "# Load library\nlibrary(dpos)\n\n",
           "# Code for plot generation\n",
           "scans <- load_scans(file.path(\"path\", \"to\", \"%s\"))\n",
           "scan <- scans[[1]]\n",
-          "make_%splot(scan)") %>%
+          "make_%splot(scan)\n",
+          "```") %>%
         sprintf(basename(view_file), input$tuning_file_plot_tabs)
     }
 
